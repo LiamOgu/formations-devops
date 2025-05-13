@@ -6,17 +6,11 @@ echo "=== DÉBUT DE L'EXÉCUTION DU SCRIPT ==="
 echo "Mise à jour des paquets..."
 yum update -y
 
-echo "Installation d'Apache..."
-yum install -y httpd
+echo "Installation de Docker..."
+yum install -y docker
 
 echo "Démarrage du service Apache..."
-systemctl start httpd
-systemctl enable httpd
-
-echo "Création de la page d'accueil..."
-echo '<html><body><h1>Hello from Terraform</h1><p>Installation réussie!</p></body></html>' > /var/www/html/index.html
-
-echo "Redémarrage d'Apache..."
-systemctl restart httpd
+systemctl start docker
+systemctl enable docker
 
 echo "=== FIN DE L'EXÉCUTION DU SCRIPT ==="

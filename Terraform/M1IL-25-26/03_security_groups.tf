@@ -13,7 +13,7 @@ resource "aws_security_group" "tp-terraform-ec2-allow_tls_ssh" {
       from_port   = ingress.value
       to_port     = ingress.value
       protocol    = "tcp"
-      cidr_blocks = ["MY-IP/32"]
+      cidr_blocks = ["MY_IP/32"]
       description = "Allow ${ingress.key} traffic from"
     }
   }
@@ -22,7 +22,7 @@ resource "aws_security_group" "tp-terraform-ec2-allow_tls_ssh" {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
-    cidr_blocks = ["MY-IP/32"]
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   tags = {
