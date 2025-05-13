@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bienvenue sur Azure !</title>
+    <style>
+        body {
+            background: linear-gradient(120deg, #4f8cff 0%, #6ee7b7 100%);
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+            color: #222;
+        }
+        .container {
+            max-width: 700px;
+            margin: 60px auto;
+            background: rgba(255,255,255,0.95);
+            border-radius: 18px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+            padding: 2.5rem 2rem 2rem 2rem;
+            text-align: center;
+        }
+        h1 {
+            color: #2563eb;
+            font-size: 2.7rem;
+            margin-bottom: 0.5rem;
+        }
+        h2 {
+            color: #0e7490;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .icon {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            color: #4f8cff;
+        }
+        .card {
+            background: #f1f5f9;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            transition: box-shadow 0.2s;
+        }
+        .card:hover {
+            box-shadow: 0 6px 18px rgba(0,0,0,0.13);
+        }
+        .btn {
+            display: inline-block;
+            margin-top: 1.5rem;
+            background: #2563eb;
+            color: #fff;
+            padding: 0.8rem 2rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            box-shadow: 0 2px 8px rgba(79,140,255,0.13);
+            transition: background 0.2s;
+        }
+        .btn:hover {
+            background: #0e7490;
+        }
+        footer {
+            margin-top: 2.5rem;
+            color: #64748b;
+            font-size: 1rem;
+        }
+        @media (max-width: 600px) {
+            .container { padding: 1rem; }
+            h1 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="icon">☁️</div>
+        <h1>Bienvenue sur votre VM Azure !</h1>
+        <h2>Déployée automatiquement avec Terraform</h2>
+        <div class="card">
+            <p>Cette machine virtuelle a été provisionnée sur Azure grâce à la magie de l'<b>Infrastructure as Code</b>.<br>
+            Profitez d'une plateforme moderne, scalable et sécurisée pour vos applications !</p>
+        </div>
+        <a class="btn" href="https://portal.azure.com/" target="_blank">Accéder au portail Azure</a>
+        <footer>
+            <p>&copy; 2025 - Projet Cloud Azure | Powered by Terraform</p>
+        </footer>
+    </div>
+</body>
+</html>
