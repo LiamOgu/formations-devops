@@ -1,0 +1,5 @@
+- hosts: lucas
+  gather_facts: false
+  become: true
+  roles:
+    - grafana

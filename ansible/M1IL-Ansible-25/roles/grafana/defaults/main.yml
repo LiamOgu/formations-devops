@@ -1,0 +1,6 @@
+---
+# defaults file for grafana
+required_packages:
+  - apt-transport-https
+  - software-properties-common
+  - wget

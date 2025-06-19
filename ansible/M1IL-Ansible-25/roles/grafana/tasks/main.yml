@@ -1,0 +1,58 @@
+---
+# tasks file for grafana
+# Install required packages
+- name: install required packages
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ required_packages }}"
+
+- name: Create /etc/apt/keyrings directory
+  ansible.builtin.file:
+    path: /etc/apt/keyrings/
+    state: directory
+
+# wget -q -O - https://apt.grafana.com/gpg.key | gpg --dearmor | sudo tee /etc/apt/keyrings/grafana.gpg > /dev/null
+- name: Add Grafana GPG Key
+  ansible.builtin.apt_key:
+    url: https://apt.grafana.com/gpg.key
+    state: present
+    keyring: /etc/apt/keyrings/grafana.gpg
+
+# echo "deb [signed-by=/etc/apt/keyrings/grafana.gpg] https://apt.grafana.com stable main" | sudo tee -a /etc/apt/sources.list.d/grafana.list
+- name: Add Grafana APT repository
+  ansible.builtin.apt_repository:
+    repo: "deb [signed-by=/etc/apt/keyrings/grafana.gpg] https://apt.grafana.com stable main"
+    state: present
+    filename: grafana
+
+# sudo apt-get update
+- name: Update APT cache
+  ansible.builtin.apt:
+    update_cache: yes
+
+# sudo apt-get install grafana
+- name: Install Grafana
+  ansible.builtin.package:
+    name: grafana
+    state: present
+    cache_valid_time: 3600
+
+#### Start Grafana server ####
+
+# sudo systemctl daemon-reload
+- name: Reload systemd daemon
+  ansible.builtin.systemd:
+    daemon_reload: yes
+
+# sudo systemctl enable grafana-server
+- name: Start Grafana server
+  ansible.builtin.systemd:
+    name: grafana-server
+    state: started
+    enabled: true
+
+# Display how to connect to Grafana
+- name: Display Grafana connection information
+  ansible.builtin.debug:
+    msg: "Grafana is installed. You can access it at http://{{ ansible_host }}:3000 with username 'admin' and password 'admin'."
