@@ -1,0 +1,7 @@
+#SPDX-License-Identifier: MIT-0
+---
+# handlers file for bootstrap
+- name: Restart SSH
+  ansible.builtin.systemd:
+    name: ssh
+    state: restarted

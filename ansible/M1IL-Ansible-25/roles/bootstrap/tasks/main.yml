@@ -1,0 +1,58 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for bootstrap
+- name: Create user from inventory_hostname
+  ansible.builtin.user:
+    name: "{{ inventory_hostname }}"
+    state: present
+    shell: /bin/bash
+    groups: sudo
+    append: true
+    password: "{{ 'student' | password_hash('sha512', 'mysecretsalt') }}"
+
+- name: Install required packages
+  ansible.builtin.package:
+    name:
+      - python3
+      - git
+      - curl
+      - acl
+    state: present
+
+- name: Check if uv is already installed
+  ansible.builtin.command: uv --version
+  register: uv_version
+  changed_when: false
+  failed_when: false
+  become_user: "{{ inventory_hostname }}"
+
+- name: Install uv with curl
+  ansible.builtin.shell: |
+    curl -LsSf https://astral.sh/uv/install.sh | sh
+  become_user: "{{ inventory_hostname }}"
+  when: uv_version.rc != 0
+
+- name: Manage SSH to allow password authentication
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^#?PasswordAuthentication'
+    line: 'PasswordAuthentication yes'
+    state: present
+  notify:
+    - Restart SSH
+
+- name: Template SSH allow users
+  ansible.builtin.template:
+    src: allow_ssh_from_user.j2
+    dest: "/etc/ssh/sshd_config.d/10-password-login-{{ inventory_hostname }}.conf"
+    owner: root
+    group: root
+    mode: '0644'
+  notify:
+    - Restart SSH
+
+- name: Ensure SSH service is running and enabled
+  ansible.builtin.systemd:
+    name: ssh
+    state: started
+    enabled: true

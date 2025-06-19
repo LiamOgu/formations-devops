@@ -1,0 +1,6 @@
+- name: Bootstrap the servers
+  hosts: aws
+  become: true
+  gather_facts: false
+  roles:
+    - bootstrap

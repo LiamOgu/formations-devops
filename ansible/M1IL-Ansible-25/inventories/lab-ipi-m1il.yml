@@ -1,0 +1,60 @@
+all:
+  children:
+    aws:
+      vars:
+        ansible_user: ubuntu
+        ansible_python_interpreter: /usr/bin/python3
+        ansible_connection: ssh
+        ansible_become: true
+        ansible_become_method: sudo
+        ansible_host_key_checking: false
+        ansible_ssh_private_key_file: /Users/afaivre/Desktop/lab-scc.pem
+      hosts:
+        adel:
+          ansible_host: 3.249.187.243
+          user: adel
+        lucas:
+          ansible_host: 3.250.73.74
+          user: lucas
+        alireza:
+          ansible_host: 3.252.216.44
+          user: alireza
+        carole:
+          ansible_host: 3.253.101.11
+          user: carole
+        joy:
+          ansible_host: 3.253.160.6
+          user: joy
+        oceane:
+          ansible_host: 3.254.7.226
+          user: oceane
+        alexandre:
+          ansible_host: 3.254.189.207
+          user: alexandre
+        samuel:
+          ansible_host: 18.201.93.79
+          user: samuel
+        nicolas:
+          ansible_host: 34.247.219.89
+          user: nicolas
+        james:
+          ansible_host: 34.248.8.8
+          user: james
+        max:
+          ansible_host: 34.252.157.141
+          user: max
+        virgile:
+          ansible_host: 52.50.117.233
+          user: virgile
+        bandemou:
+          ansible_host: 52.213.158.152
+          user: bandemou
+        luigi:
+          ansible_host: 54.170.107.237
+          user: luigi
+        florent:
+          ansible_host: 54.195.2.97
+          user: florent
+        grincheux:
+          ansible_host: 54.216.208.7
+          user: grincheux
