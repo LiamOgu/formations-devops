@@ -1,132 +1,211 @@
-# 🐉 **Quête : Création d'une Machine Virtuelle sur AWS**
+# ☁️ Infrastructure AWS - M1 Ingénierie Logicielle 2025-2026
 
-## 📜 **Introduction**
+Projet Terraform pour déployer une infrastructure AWS complète dans le cadre de la formation M1 Ingénierie Logicielle.
 
-Bienvenue, aventurier ! Vous êtes sur le point d'entreprendre une quête épique dans le royaume du Cloud. Votre mission, si vous l'acceptez, est de déployer une machine virtuelle sur AWS en utilisant les puissants artefacts que sont **Terraform** et **AWS CLI**. Préparez vos outils, configurez vos sorts, et partez à l'aventure !
+## 🏗️ Architecture
 
----
+### Infrastructure Déployée
+- **1 instance EC2** avec configuration automatique
+- **1 Elastic IP** pour un accès fixe
+- **Security Groups** avec règles HTTP/HTTPS/SSH
+- **Key Pair** pour l'authentification SSH
+- **Page web de démonstration**
 
-## 🧙‍♂️ **Prérequis**
+### Région AWS
+- **Zone** : eu-west-3 (Paris)
+- **Profil AWS** : tp-terraform-ec2-ipi
 
-Avant de vous lancer dans cette quête, assurez-vous d'avoir en votre possession les artefacts suivants :
+## 🚀 Prérequis
 
-- **AWS CLI** : L'amulette qui vous permet de communiquer avec les dieux du Cloud.
-- **Terraform** : Le grimoire magique pour invoquer et gérer vos ressources.
-
----
-
-## 🏰 **Étape 1 : Préparation des Credentials**
-
-Pour accéder au royaume d'AWS, vous devez obtenir une **clé magique** (credentials). Voici les étapes pour les obtenir :
-
-1. Créez un utilisateur dans la console AWS avec les permissions nécessaires pour invoquer les ressources.
-2. Téléchargez les **clés d'accès** (Access Key ID et Secret Access Key).
-3. Configurez votre artefact AWS CLI avec la commande suivante :
-
-   ```bash
-   aws configure
-   ```
-
-   Fournissez les informations suivantes :
-   - **Access Key ID** : Votre clé magique.
-   - **Secret Access Key** : Votre mot de passe secret.
-   - **Region** : La région où vous souhaitez déployer vos ressources (ex. `us-east-1`).
-
----
-
-## ⚔️ **Étape 2 : Invocation des Ressources**
-
-### 📖 **Le Grimoire Terraform**
-
-Le grimoire Terraform contient les incantations nécessaires pour invoquer les ressources suivantes :
-- **VPC** : Le royaume où résidera votre machine virtuelle.
-- **Elastic IP** : Une adresse magique pour accéder à votre machine.
-- **Security Groups** : Les boucliers protégeant votre royaume.
-- **Key Pair** : La clé pour ouvrir les portes de votre machine.
-- **Instance EC2** : Votre fidèle serviteur dans le Cloud.
-
-### 🪄 **Commandes Magiques**
-
-1. **Initialisation du Grimoire** :
-   ```bash
-   terraform init
-   ```
-
-2. **Planification de l'Invocation** :
-   ```bash
-   terraform plan
-   ```
-
-3. **Exécution de l'Invocation** :
-   ```bash
-   terraform apply
-   ```
-
-4. **Destruction des Ressources (si nécessaire)** :
-   ```bash
-   terraform destroy
-   ```
-
----
-
-## 🛡️ **Étape 3 : Configuration de la Machine**
-
-Une fois votre machine invoquée, elle exécutera un script magique (`user_data`) pour installer et configurer les services nécessaires. Par défaut, elle déploiera un serveur web Apache avec une page d'accueil personnalisée.
-
----
-
-## 🗺️ **Ressources Déployées**
-
-Voici les artefacts que vous invoquerez lors de cette quête :
-
-- **VPC** : Un royaume isolé pour vos ressources.
-- **Elastic IP** : Une adresse publique pour accéder à votre machine.
-- **Security Groups** : Des règles pour autoriser ou bloquer le trafic.
-- **Key Pair** : Une clé SSH pour sécuriser l'accès.
-- **Instance EC2** : Une machine virtuelle pour héberger vos applications.
-
----
-
-## 🧝‍♀️ **Sorts Utiles**
-
-### **Commande SSH pour se connecter à votre machine :**
 ```bash
-ssh -i tp-terraform-ipi.pem ec2-user@<votre-ip-publique>
+# Installation Terraform (macOS)
+brew install terraform
+
+# Configuration AWS CLI avec profil spécifique
+aws configure --profile tp-terraform-ec2-ipi
 ```
 
-### **URL de l'application web :**
+## 📁 Structure du Projet
+
 ```
-http://<votre-ip-publique>
+M1IL-25-26/
+├── providers.tf          # Configuration des providers
+├── variables.tf          # Variables d'entrée
+├── data.tf              # Sources de données AWS
+├── 02_eip.tf            # Elastic IP et association
+├── 03_security_groups.tf # Groupes de sécurité
+├── 04_key_pair.tf       # Clés SSH
+├── 10_virtual_machines.tf # Instances EC2
+├── output.tf            # Valeurs de sortie
+├── bootstrap.sh         # Script d'initialisation
+├── index.html           # Page web de démonstration
+└── README.MD            # Documentation
 ```
 
----
+## 🚀 Déploiement
 
-## 🏆 **Récompenses**
+### Configuration AWS
+```bash
+# Vérifier la configuration
+aws sts get-caller-identity --profile tp-terraform-ec2-ipi
 
-À la fin de cette quête, vous aurez :
-- Une infrastructure AWS entièrement fonctionnelle.
-- Une compréhension approfondie de Terraform et AWS.
-- Une page web déployée sur votre instance EC2.
+# Test de connectivité
+aws ec2 describe-regions --profile tp-terraform-ec2-ipi
+```
 
----
+### Exécution Terraform
+```bash
+# Initialisation du projet
+terraform init
 
-## 🐲 **Attention aux Pièges !**
+# Validation de la configuration
+terraform validate
 
-- **Permissions IAM** : Assurez-vous que votre utilisateur AWS dispose des permissions nécessaires.
-- **Groupes de Sécurité** : Ouvrez les ports 22 (SSH) et 80 (HTTP) pour accéder à votre machine.
-- **Région AWS** : Vérifiez que vos ressources sont déployées dans la bonne région.
+# Planification des changements
+terraform plan
 
----
+# Application de l'infrastructure
+terraform apply
 
-## 📚 **Ressources Supplémentaires**
+# Affichage des outputs
+terraform output
 
-- [Documentation Terraform](https://www.terraform.io/docs)
-- [Documentation AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html)
-- [Guide des Instances EC2](https://aws.amazon.com/ec2/)
+# Destruction (après utilisation)
+terraform destroy
+```
 
----
+## 🔧 Ressources Déployées
 
-## 🎲 **Que les dés soient avec vous !**
+### Infrastructure Principale
+- **Instance EC2** : Machine virtuelle Ubuntu/Amazon Linux
+- **Elastic IP** : Adresse IP publique fixe
+- **Security Group** : Règles de pare-feu (SSH, HTTP, HTTPS)
+- **Key Pair** : Clé SSH générée automatiquement
+- **Bootstrap Script** : Configuration automatique du serveur web
 
-Bonne chance, aventurier ! Que votre quête soit couronnée de succès et que vos ressources soient déployées sans erreur. 🐉
+### Configuration Réseau
+- **Ports ouverts** : 22 (SSH), 80 (HTTP), 443 (HTTPS)
+- **Accès SSH** : Via clé privée générée
+- **Région** : eu-west-3 (Paris)
+
+## 📊 Variables et Personnalisation
+
+### Variables Principales
+```hcl
+# Exemple de variables.tf
+variable "environment" {
+  description = "Environment name"
+  type        = string
+  default     = "development"
+}
+
+variable "instance_type" {
+  description = "EC2 instance type"
+  type        = string
+  default     = "t3.micro"
+}
+```
+
+### Outputs Utiles
+Après déploiement, les informations suivantes sont affichées :
+- **Adresse IP publique** de l'instance
+- **Commande SSH** pour se connecter
+- **URL du site web** déployé
+
+## 🛡️ Sécurité
+
+### Bonnes Pratiques Implémentées
+1. **Clés SSH** générées automatiquement
+2. **Security Groups** restrictifs
+3. **Profil AWS** dédié à la formation
+4. **Tags** pour l'identification des ressources
+
+### Accès à l'Instance
+```bash
+# Récupération de la clé privée (générée par Terraform)
+terraform output -raw private_key > tp-terraform-ipi.pem
+chmod 600 tp-terraform-ipi.pem
+
+# Connexion SSH
+ssh -i tp-terraform-ipi.pem ubuntu@$(terraform output -raw public_ip)
+```
+
+## � Vérification du Déploiement
+
+### Tests de Connectivité
+```bash
+# Test du serveur web
+curl http://$(terraform output -raw public_ip)
+
+# Vérification de l'état des ressources AWS
+aws ec2 describe-instances --profile tp-terraform-ec2-ipi \
+  --filters "Name=tag:Project,Values=M1IL-Formation"
+```
+
+### Monitoring
+```bash
+# Logs de l'instance (via SSH)
+sudo journalctl -u nginx -f
+
+# État des services
+sudo systemctl status nginx
+```
+
+## 🎓 Objectifs Pédagogiques
+
+### Compétences Développées
+1. **Infrastructure as Code** avec Terraform
+2. **Gestion des resources AWS** (EC2, VPC, Security Groups)
+3. **Automatisation** du déploiement
+4. **Sécurisation** des accès SSH
+5. **Configuration** de serveurs web
+
+### Exercices Avancés
+1. **Modification de l'instance** (type, région)
+2. **Ajout de ressources** (Load Balancer, RDS)
+3. **Gestion multi-environnements** (dev, staging, prod)
+4. **Utilisation de modules** Terraform
+
+## 🔄 Gestion des États
+
+### Backend Local (par défaut)
+L'état Terraform est stocké localement dans `terraform.tfstate`
+
+### Backend S3 (optionnel - production)
+```hcl
+terraform {
+  backend "s3" {
+    bucket  = "m1il-terraform-state"
+    key     = "infrastructure/terraform.tfstate"
+    region  = "eu-west-3"
+    profile = "tp-terraform-ec2-ipi"
+  }
+}
+```
+
+## � Troubleshooting
+
+### Problèmes Courants
+1. **Permissions IAM insuffisantes**
+   ```bash
+   aws iam get-user --profile tp-terraform-ec2-ipi
+   ```
+
+2. **Région incorrecte**
+   ```bash
+   aws configure get region --profile tp-terraform-ec2-ipi
+   ```
+
+3. **Quotas AWS dépassés**
+   ```bash
+   aws service-quotas get-service-quota --service-code ec2 \
+     --quota-code L-1216C47A --profile tp-terraform-ec2-ipi
+   ```
+
+## 📚 Ressources
+
+- [Terraform AWS Provider](https://registry.terraform.io/providers/hashicorp/aws/)
+- [AWS EC2 Documentation](https://docs.aws.amazon.com/ec2/)
+- [Terraform Best Practices](https://www.terraform.io/docs/cloud/guides/recommended-practices/)
+- [AWS CLI Reference](https://docs.aws.amazon.com/cli/)
 
