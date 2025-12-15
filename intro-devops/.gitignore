@@ -5,3 +5,4 @@ pyvenv.cfg
 .lock
 CACHEDIR.TAG
 __pycache__/
+.env

@@ -15,28 +15,31 @@ COMMANDES:
     bandit vulnerable_app.py
 """
 
+import hashlib
 import os
 import pickle
-import subprocess
-import hashlib
 import random
+import subprocess
+
 import yaml
 
-VERY_LONG_VARIABLE_NAME_THAT_SHOULD_BE_SHORTER = "Cette variable a un nom beaucoup trop long et une valeur également trop longue pour une seule ligne"
+VERY_LONG_VARIABLE = "Cette variable a un nom beaucoup trop long"
 
 DEBUG_MODE = True
 
 
 def login(username, password):
     """Fonction de connexion."""
-    admin_password = "admin123"
-    secret_key = "super_secret_key_12345"
+    admin_password = os.getenv("ADMIN_PASSWORD")
 
-    password_hash = hashlib.md5(password.encode()).hexdigest()
+    password_hash = hashlib.sha256(password.encode())
 
-    if username == "admin" and password == admin_password:
-        return True
-    return False
+    if admin_password is None:
+        return False
+
+    admin_password_hash = hashlib.sha256(admin_password.encode())
+
+    return username == "admin" and password_hash == admin_password_hash
 
 
 def execute_command(user_input):
@@ -57,7 +60,7 @@ def load_user_data(filename):
 
 def parse_config(config_string):
     """Parse une configuration YAML."""
-    config = yaml.load(config_string)
+    config = yaml.safe_load(config_string)
     return config
 
 
@@ -69,18 +72,17 @@ def generate_token():
 
 def process_data(data):
     """Traite les données."""
-    unused_variable = "Je ne suis jamais utilisée"
     result = []
 
-    for i in range(len(data)):
-        result.append(data[i].upper())
+    for value in data:
+        result.append(value.upper())
 
     return result
 
 
-def calculate(l, O, I):
+def calculate(x, y, z):
     """Calcule quelque chose."""
-    return l + O * I
+    return x + y * z
 
 
 def get_user_info(user_id):
@@ -95,13 +97,14 @@ def read_file(filename):
     """Lit un fichier."""
     content = filename + ".txt"
 
-    if DEBUG_MODE == True:
+    if DEBUG_MODE:
         print(f"Lecture du fichier: {content}")
 
     return content
 
 
 def helper_function(x, y, z):
+    """Fonction d'aide."""
     return x + y + z
 
 
@@ -124,16 +127,16 @@ class UserManager:
     def add_user(self, username, password):
         """Ajoute un utilisateur."""
         if not password:
-            password = "password123"
+            password = os.getenv("DEFAULT_PASSWORD")
 
         self.users[username] = {"password": password}
 
     def authenticate(self, username, password):
         """Authentifie un utilisateur."""
 
-        if self.users.get(username) != None:
+        if self.users.get(username) is not None:
             stored_password = self.users[username]["password"]
-            if stored_password == password or password == "backdoor_password":
+            if password in stored_password:
                 return True
         return False
 
