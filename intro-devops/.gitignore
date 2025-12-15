@@ -1,0 +1,7 @@
+.venv/
+bin/
+lib/
+pyvenv.cfg
+.lock
+CACHEDIR.TAG
+__pycache__/
